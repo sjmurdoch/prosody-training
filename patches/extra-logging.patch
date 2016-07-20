@@ -1,0 +1,17 @@
+diff -Naur prosody-orig/core/stanza_router.lua prosody-patched/core/stanza_router.lua
+--- prosody-orig/core/stanza_router.lua	2015-03-28 13:21:44.000000000 +0000
++++ prosody-patched/core/stanza_router.lua	2015-11-26 23:38:19.000000000 +0000
+@@ -54,7 +54,12 @@
+ 
+ local iq_types = { set=true, get=true, result=true, error=true };
+ function core_process_stanza(origin, stanza)
+-	(origin.log or log)("debug", "Received[%s]: %s", origin.type, stanza:top_tag())
++        local debug_jid = '-'
++        if origin.full_jid then
++            debug_jid = string.format('%q', origin.full_jid)
++        end
++
++	(origin.log or log)("debug", "Received[%s][%s]: %s", origin.type, debug_jid, string.format('%q', tostring(stanza)):gsub("\\\n", "\\n"))
+ 
+ 	if origin.type == "c2s" and not stanza.attr.xmlns then
+ 		local name, st_type = stanza.name, stanza.attr.type;
