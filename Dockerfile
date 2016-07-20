@@ -4,6 +4,7 @@ MAINTAINER Steven Murdoch <s.murdoch@ucl.ac.uk>
 RUN apt-get update && apt-get install -y patch && rm -rf /var/lib/apt/lists/*
 
 COPY ./patches/extra-logging.patch /tmp
+RUN mkdir -p /data
 COPY entrypoint.sh /data
 RUN patch -p1 -d /usr/lib/prosody < /tmp/extra-logging.patch
 
